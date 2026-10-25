@@ -4,6 +4,8 @@
 
 可选功能：[独立登录／锁屏动画插件](ui/README.zh-CN.md)，无需重编译 KDE。
 
+可选功能：[sudo 等终端命令的指纹状态面板](terminal/README.zh-CN.md)。
+
 为 USB **`33a7:2388`** 指纹传感器编写的实验性 libfprint 驱动，支持多指纹
 槽位分配、fprintd 验证和 KDE 指纹管理。不是厂商或 libfprint 官方版本。
 

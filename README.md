@@ -4,6 +4,8 @@
 
 Optional: [independent animated login / lock-screen wallpaper plugin](ui/README.md).
 
+Optional: [terminal fingerprint feedback for sudo and other commands](terminal/README.md).
+
 Experimental libfprint driver for the **OMS/OFilm USB fingerprint sensor
 `33a7:2388`**. It supports enrolling multiple fingerprints into separate sensor
 slots and using them through fprintd and KDE Plasma's fingerprint settings.
