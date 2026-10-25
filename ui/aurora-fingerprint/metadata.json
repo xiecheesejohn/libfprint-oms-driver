@@ -1,0 +1,14 @@
+{
+    "KPackageStructure": "Plasma/Wallpaper",
+    "KPlugin": {
+        "Id": "io.github.xiecheesejohn.aurorafingerprint",
+        "Name": "Aurora Fingerprint",
+        "Name[zh_CN]": "极光指纹",
+        "Description": "Animated aurora with read-only fingerprint status feedback",
+        "Description[zh_CN]": "极光动态背景与只读指纹状态动画",
+        "Version": "0.1.0",
+        "License": "LGPL-2.1-or-later",
+        "Authors": [{"Name": "libfprint-oms-driver contributors"}],
+        "Website": "https://github.com/xiecheesejohn/libfprint-oms-driver"
+    }
+}

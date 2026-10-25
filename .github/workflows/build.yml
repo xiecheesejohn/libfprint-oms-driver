@@ -16,3 +16,13 @@ jobs:
             libglib2.0-dev libgusb-dev libgirepository1.0-dev libudev-dev
       - name: Build pinned upstream and run tests
         run: bash scripts/build.sh
+      - name: Check optional UI source metadata and Python syntax
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, py_compile, xml.etree.ElementTree as ET
+          root = pathlib.Path('ui')
+          json.loads((root / 'aurora-fingerprint/metadata.json').read_text())
+          ET.parse(root / 'aurora-fingerprint/contents/config/main.xml')
+          for source in root.rglob('*.py'):
+              py_compile.compile(str(source), doraise=True)
+          PY

@@ -2,6 +2,8 @@
 
 [中文安装与使用说明](README.zh-CN.md)
 
+Optional: [independent animated login / lock-screen wallpaper plugin](ui/README.md).
+
 Experimental libfprint driver for the **OMS/OFilm USB fingerprint sensor
 `33a7:2388`**. It supports enrolling multiple fingerprints into separate sensor
 slots and using them through fprintd and KDE Plasma's fingerprint settings.
