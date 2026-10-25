@@ -1,0 +1,16 @@
+libfprint-oms-driver
+
+Project source: LGPL-2.1-or-later. See LICENSE.
+The integration patch modifies libfprint v1.94.100, also LGPL-2.1-or-later.
+Upstream: https://gitlab.freedesktop.org/libfprint/libfprint
+Preserve upstream copyright and license notices when distributing the prepared source.
+
+Upstream libfprint is downloaded separately with a pinned SHA-256 checksum.
+This repository does not distribute vendor Windows software, firmware, decompiled
+vendor source, raw USB captures, or personal fingerprint records.
+
+Protocol behavior was studied for interoperability with OMS/OFilm hardware using
+USB observations and analysis of the vendor Windows driver. This is an independent,
+unofficial project and is not endorsed by OMS, OFilm, MECHREVO, or libfprint.
+Hardware testing and initial project work: xiecheesejohn.
+Some implementation and documentation were developed with AI assistance.

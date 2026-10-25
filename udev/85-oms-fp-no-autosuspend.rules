@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# Keep the tested OMS sensor powered; runtime autosuspend can stall commands.
+ACTION=="add|change", SUBSYSTEM=="usb", ATTR{idVendor}=="33a7", ATTR{idProduct}=="2388", TEST=="power/control", ATTR{power/control}="on"

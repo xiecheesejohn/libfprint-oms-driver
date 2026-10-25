@@ -1,0 +1,42 @@
+--- a/meson.build
++++ b/meson.build
+@@ -144,6 +144,7 @@
+     'nb1010': {},
+     'fpcmoc': {},
+     'realtek': {},
++    'oms': {},
+     'focaltech_moc': {},
+     'mafpmoc': {},
+     'secugen': {},
+--- a/libfprint/meson.build
++++ b/libfprint/meson.build
+@@ -136,6 +136,7 @@
+     ),
+     'fpcmoc' : files('drivers/fpcmoc/fpc.c'),
+     'realtek' : files('drivers/realtek/realtek.c'),
++    'oms' : files('drivers/oms/oms.c'),
+     'focaltech_moc' : files('drivers/focaltech_moc/focaltech_moc.c'),
+     'mafpmoc' : files('drivers/mafpmoc/mafpmoc.c'),
+     'secugen' : files('drivers/secugen.c'),
+--- a/libfprint/fprint-list-udev-hwdb.c
++++ b/libfprint/fprint-list-udev-hwdb.c
+@@ -199,7 +199,6 @@
+   { .vid = 0x2df0, .pid = 0x0003 },
+   { .vid = 0x3274, .pid = 0x9008 },
+   { .vid = 0x3274, .pid = 0xb012 },
+-  { .vid = 0x33a7, .pid = 0x2388 },
+   { .vid = 0x3538, .pid = 0x0930 },
+   /* --- END GENERATED IDS --- */
+   { .vid = 0 },
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -1,4 +1,9 @@
+ envs = environment()
++if 'oms' in drivers
++  oms_protocol_test = executable('test-oms-protocol', 'oms-protocol.c',
++    dependencies: glib_dep)
++  test('oms-protocol', oms_protocol_test)
++endif
+ # Enable debug messages and abort on warnings
+ envs.set('G_DEBUG', 'fatal-warnings')
+ envs.set('G_MESSAGES_DEBUG', 'all')

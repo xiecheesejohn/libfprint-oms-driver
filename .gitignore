@@ -1,0 +1,10 @@
+_work/
+.cache/
+*.so*
+*.pcap
+*.pcapng
+*.zip
+*.dll
+*.exe
+*.bin
+__pycache__/
