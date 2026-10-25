@@ -95,9 +95,35 @@ sudo authselect enable-feature with-fingerprint
 authselect check
 ```
 
-这要求所用 profile 支持该功能。**锁屏解锁和开机首次登录不是同一套认证入口。**
-实测机的 Plasma Login Manager 使用不含指纹模块的 `password-auth`；本项目
-不自动修改该配置，因此不能把锁屏成功当成开机登录已支持指纹。
+这要求所用 profile 支持该功能。锁屏解锁和开机首次登录使用不同的 PAM 入口。
+
+### 启用开机登录指纹（可选）
+
+Fedora 的 Plasma Login Manager 默认使用 `password-auth`，其中可能没有指纹
+模块，所以锁屏可用不代表开机登录可用。实测机可执行：
+
+```bash
+sudo python3 scripts/plasma-login-fingerprint.py --enable
+```
+
+脚本检查 `system-auth` 与 `password-auth` 仅相差已有的 sufficient
+`pam_fprintd` 行，先备份，再仅将 Plasma Login Manager 的 **auth** 子栈改为
+`system-auth`。保留密码回退及 account/password/session 规则；不修改全局
+`password-auth`、SSH、厂商 PAM 文件或其他服务。其他 profile 若不符合检查，
+脚本会拒绝自动修改。不会注销、重启电脑或重启登录管理器。
+
+开机界面：**选中用户 → 按 Enter／点击登录 → 触摸已登记的手指**。
+仅停留在登录界面不会自动开始扫描。使用密码时可能先等待指纹尝试再回退。
+指纹登录也不能代替密码去解锁以密码加密的钱包。
+
+此修改后，真实手指通过了 `plasmalogin` PAM 服务的 authenticate 和 acct_mgmt
+检查；完整的下次开机登录界面仍待确认。使用脚本输出的实际路径回退：
+
+```bash
+sudo python3 scripts/plasma-login-fingerprint.py --restore /var/lib/libfprint-oms-login-backups/实际备份目录
+```
+
+本地覆盖配置会跨重启保留；发行版日后更新厂商 PAM 文件时应检查是否需要合并。
 
 ## 已验证和未验证
 
@@ -105,7 +131,7 @@ authselect check
 - 正确手指验证成功；错误手指收到芯片明确的不匹配结果。
 - 不触摸不会通过；KDE 锁屏解锁已确认可用。
 - 验证限定指定槽；`any` 识别只接受当前用户登记列表中的槽。
-- **待验证：**完整冷启动、休眠唤醒、真实芯片删除、多用户和其他固件版本。
+- **待验证：**完整断电冷启动及修改后的开机界面、休眠唤醒、真实芯片删除、多用户和其他固件版本。
 - 占用表为 256 位，**不代表实际支持 256 枚指纹**，硬件容量尚未确认。
 - 兼容旧原型的槽 0 记录；旧记录没有以密码学方式绑定芯片模板的所有者。
 
@@ -115,7 +141,8 @@ authselect check
 
 库、登记记录和 USB 防自动休眠规则会保留。fprintd 通过 D-Bus 按需启动，
 显示 `static` 或空闲时退出属于正常情况，不需要 enable。
-完整冷启动仍待实测；重启后运行 `fprintd-list "$USER"` 和
+已在用户重启后确认设备、登记及真实指纹匹配仍有效；完整断电冷启动及
+新的开机登录界面流程仍待实测。重启后运行 `fprintd-list "$USER"` 和
 `fprintd-verify -f any "$USER"` 检查。
 
 **系统更新或重装 libfprint 可能覆盖自定义库。** 本项目还不是 Fedora RPM。

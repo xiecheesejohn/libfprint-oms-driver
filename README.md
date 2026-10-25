@@ -122,11 +122,42 @@ sudo authselect enable-feature with-fingerprint
 authselect check
 ```
 
-This requires a profile that supports the feature. It does not guarantee that
-every display manager's PAM stack uses fingerprint authentication. **KDE lock
-screen support and first login after boot are separate integrations.** On the
-test machine, Plasma Login Manager uses `password-auth`, which does not include
-the fingerprint module. This project does not modify that login configuration.
+This requires a profile that supports the feature. KDE lock-screen support and
+first login after boot are separate PAM integrations.
+
+### Enable fingerprint at boot login (optional)
+
+Fedora's Plasma Login Manager uses `password-auth`, which can exclude fingerprint
+verification even when KDE lock-screen unlocking works. On the tested Fedora
+configuration, enable a local login-only override:
+
+```bash
+sudo python3 scripts/plasma-login-fingerprint.py --enable
+```
+
+The script checks that `system-auth` differs from `password-auth` only by the
+existing sufficient `pam_fprintd` line, backs up the current service, then changes
+only Plasma Login Manager's **auth** substack to `system-auth`. Password fallback
+and account/password/session rules remain intact. SSH, global `password-auth`,
+PAM vendor files and authentication settings for other services are not changed.
+Other authselect profiles that do not pass this comparison require manual review.
+No logout, reboot or display-manager restart is performed.
+
+At boot login: **select your user, press Enter/click Log In, then touch a registered
+finger**. A fingerprint scan does not start merely because the greeter is visible.
+If using password login, the fingerprint attempt can precede password fallback.
+Fingerprint login does not supply a password to unlock password-encrypted wallets.
+
+The `plasmalogin` PAM service was tested with a real finger and passed both
+`authenticate` and `acct_mgmt` after this change. The complete next-boot greeter
+flow still needs confirmation. To revert, use the backup path printed by the script:
+
+```bash
+sudo python3 scripts/plasma-login-fingerprint.py --restore /var/lib/libfprint-oms-login-backups/ACTUAL_DIRECTORY
+```
+
+The local override persists across reboot. Review it when the distribution changes
+its vendor PAM service in future updates.
 
 ## Reboot and system updates
 
@@ -134,7 +165,8 @@ The installed library, udev rule and fprintd records persist across reboot.
 fprintd is D-Bus activated; a `static` or idle/inactive service is normal and
 does not require `systemctl enable fprintd`.
 
-Actual cold-boot testing is still pending. After reboot, check the USB ID, list
+After a reboot, USB detection, persisted prints and a real fingerprint match were
+confirmed. Full power-off/boot and the updated greeter flow remain pending. Check the USB ID, list
 your prints and run `fprintd-verify -f any "$USER"`.
 
 **A libfprint package update or reinstall can overwrite the custom library.**

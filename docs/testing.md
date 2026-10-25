@@ -13,7 +13,9 @@ Recorded on 2026-10-25 using the WUJIE 14 Pro test machine described in README.
 | KDE lock-screen unlock | Confirmed by tester; matching daemon log observed |
 | D-Bus activation after stopping fprintd | Passed; both records readable |
 | USB power rule ordering | Checked with udevadm test; overrides autosuspend |
-| Actual cold boot / reboot | Pending |
+| Reboot persistence: USB, driver, records, real fingerprint match | Passed after tester reboot |
+| Plasma Login Manager PAM authenticate + acct_mgmt | Passed with real finger after login-only override |
+| Full cold power-off / updated boot-greeter flow | Pending |
 | Suspend / resume | Pending |
 | Real sensor deletion | Pending; protocol tests only |
 | Multi-user isolation on real hardware | Pending |

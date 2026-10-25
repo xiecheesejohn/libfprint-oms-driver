@@ -25,6 +25,6 @@ jobs:
           ET.parse(root / 'aurora-fingerprint/contents/config/main.xml')
           for source in root.rglob('*.py'):
               py_compile.compile(str(source), doraise=True)
-          for source in pathlib.Path('terminal').rglob('*.py'):
+          for source in [*pathlib.Path('terminal').rglob('*.py'), *pathlib.Path('scripts').glob('*.py')]:
               py_compile.compile(str(source), doraise=True)
           PY

@@ -34,7 +34,8 @@ success; this plugin never delays or controls unlocking.
 
 The plugin only displays actual fingerprint requests. If boot login is password-
 only, the background works but no fingerprint indicator is fabricated. Enabling
-fingerprint authentication for a login manager is a separate PAM integration.
+fingerprint authentication for a login manager is a separate, optional PAM
+integration: see the boot-login section in the repository README.
 
 ## Install
 
